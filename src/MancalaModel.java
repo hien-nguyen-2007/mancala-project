@@ -24,6 +24,9 @@ public class MancalaModel {
     //Constructor
     public MancalaModel() {
         // TODO: initialize board array, listeners list, and default values
+        this.board = new int[14];
+        this.savedState = new int[14];
+        this.listeners = new ArrayList<>();
     }
 
     // Game Setup
@@ -34,6 +37,13 @@ public class MancalaModel {
      */
     public void initBoard(int stones) {
         // TODO
+        for (int i = 0; i < 14; i++) {
+            if (i != 6 && i != 13) {
+                this.board[i] = stones;
+            } else {
+                this.board[i] = 0;
+            }
+        }
     }
 
     // Core Game Logic 
@@ -149,6 +159,7 @@ public class MancalaModel {
      */
     public void addChangeListener(ChangeListener l) {
         // TODO
+        this.listeners.add(l);
     }
 
     /**
@@ -156,6 +167,10 @@ public class MancalaModel {
      */
     private void notifyListeners() {
         // TODO
+        ChangeEvent event = new ChangeEvent(this);
+        for (ChangeListener l: this.listeners) {
+            l.stateChanged(event);
+        }
     }
 
     // Getters
