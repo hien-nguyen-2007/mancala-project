@@ -38,12 +38,11 @@ public class MancalaModel {
     public void initBoard(int stones) {
         // TODO
         for (int i = 0; i < 14; i++) {
-            if (i != 6 && i != 13) {
-                this.board[i] = stones;
-            } else {
-                this.board[i] = 0;
-            }
+            this.board[i] = stones;
         }
+
+        this.board[6] = 0;
+        this.board[13] = 0;
     }
 
     // Core Game Logic 
@@ -114,6 +113,9 @@ public class MancalaModel {
      */
     public void undoMove() {
         // TODO
+        if (this.canUndo && this.undoCount < 3) {
+            this.board = this.savedState.clone();
+        }
     }
 
     /**
@@ -121,6 +123,7 @@ public class MancalaModel {
      */
     private void saveState() {
         // TODO
+        this.savedState = this.board.clone();
     }
 
     // Game Over
@@ -131,7 +134,20 @@ public class MancalaModel {
      */
     public boolean isGameOver() {
         // TODO
-        return false;
+
+        for (int i = 0; i < 6; i++) {
+            if (this.board[i] == 0) {
+                return false;
+            }
+        }
+
+        for (int i = 7; i < 13; i++) {
+            if (this.board[i] == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -140,6 +156,13 @@ public class MancalaModel {
      */
     public void collectRemainingStones() {
         // TODO
+        for (int i = 0; i < 6; i++) {
+            this.board[6] += this.board[i];
+        }
+
+        for (int i = 7; i < 13; i++) {
+            this.board[13] += this.board[i];
+        }
     }
 
     /**
@@ -148,6 +171,12 @@ public class MancalaModel {
      */
     public int getWinner() {
         // TODO
+        if (this.board[6] > this.board[13]) {
+            return 0;
+        } else if (this.board[6] < this.board[13]) {
+            return 1;
+        }
+
         return -1;
     }
 
