@@ -95,7 +95,47 @@ public class MancalaModel {
      */
     private int getOppositePit(int pitIndex) {
         // TODO
-        return -1;
+        int opposite = 0;
+        switch (pitIndex) {
+            case 0:
+                opposite = 12;
+                break;
+            case 1:
+                opposite = 11;
+                break;
+            case 2:
+                opposite = 10;
+                break;
+            case 3:
+                opposite = 9;
+                break;
+            case 4:
+                opposite = 8;
+                break;
+            case 5:
+                opposite = 7;
+                break;
+            case 7:
+                opposite = 5;
+                break;
+            case 8:
+                opposite = 4;
+                break;
+            case 9:
+                opposite = 3;
+                break;
+            case 10:
+                opposite = 2;
+                break;
+            case 11:
+                opposite = 1;
+                break;
+            case 12:
+                opposite = 0;
+                break;
+        }
+
+        return opposite;
     }
 
     /**
@@ -103,6 +143,12 @@ public class MancalaModel {
      */
     private void switchPlayer() {
         // TODO
+        if (this.currentPlayer == 1) {
+            this.currentPlayer = 0;
+        } else {
+            this.currentPlayer = 1;
+        }
+        this.savedPlayer = this.currentPlayer;
     }
 
     // Undo
@@ -116,6 +162,8 @@ public class MancalaModel {
         if (this.canUndo && this.undoCount < 3) {
             this.board = this.savedState.clone();
         }
+        this.canUndo = false;
+        this.undoCount++;
     }
 
     /**
