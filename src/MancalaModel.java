@@ -119,7 +119,19 @@ public class MancalaModel {
      * @param lastIndex index where the last stone was placed
      */
     private void checkCapture(int lastIndex) {
-        // TODO
+        int opposite = getOppositePit(lastIndex);
+
+        if (this.board[lastIndex] == 1 && this.board[opposite] != 0) {
+            if (lastIndex >= 0 && lastIndex < 6 && this.currentPlayer == 0) {
+                this.board[6] += 1 + this.board[opposite];
+                this.board[opposite] = 0;
+                this.board[lastIndex] = 0;
+            } else if (lastIndex >= 7 && lastIndex < 13 && this.currentPlayer == 1) {
+                this.board[13] += 1 + this.board[opposite];
+                this.board[opposite] = 0;
+                this.board[lastIndex] = 0;
+            }
+        }
     }
 
     /**
@@ -216,12 +228,17 @@ public class MancalaModel {
      * @return true if the game has ended
      */
     public boolean isGameOver() {
+        boolean gameOver = true;
 
         // Checks Player A's side
         for (int i = 0; i < 6; i++) {
             if (this.board[i] != 0) {
-                return false;
+                gameOver = false;
             }
+        }
+
+        if (gameOver) {
+            return true;
         }
 
         // Checks Player B's side
