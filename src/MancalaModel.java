@@ -36,11 +36,12 @@ public class MancalaModel {
      * @param stones number of stones per pit (3 or 4)
      */
     public void initBoard(int stones) {
-        // TODO
+        // Fill pits with number of stones (3 or 4)
         for (int i = 0; i < 14; i++) {
             this.board[i] = stones;
         }
 
+        // Set respective mancalas to 0
         this.board[6] = 0;
         this.board[13] = 0;
     }
@@ -102,8 +103,13 @@ public class MancalaModel {
      * @return true if the player earns a free turn
      */
     private boolean isFreeTurn(int lastIndex) {
-        // TODO
-        return false;
+        if (lastIndex == 6 && this.currentPlayer == 0) {
+            return true;
+        } else if (lastIndex == 13 && this.currentPlayer == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
