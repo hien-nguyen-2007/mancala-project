@@ -23,7 +23,8 @@ public class MancalaController {
         for (int i = 0; i< pits.length; i++) {
             pits[i].addMouseListener(this);
         }
-
+    }
+    
     /**
      * Attaches this controller as an ActionListener to the undo button.
      */
