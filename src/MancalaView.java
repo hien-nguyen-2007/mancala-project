@@ -3,7 +3,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class MancalaView implements ChangeListener {
+public class MancalaView extends JFrame implements ChangeListener {
 
     private MancalaModel mancalaModel;
     private BoardStyle boardStyle;
