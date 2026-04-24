@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 
-public class MancalaController {
+public class MancalaController implements MouseListener, ActionListener{
 
     private MancalaModel mancalaModel;
     private MancalaView mancalaView;
@@ -26,7 +26,7 @@ public class MancalaController {
      * Attaches this controller as a MouseListener to all pit panels.
      */
     private void attachPitListeners() {
-        Jpanel[] pits = mancalaView.getPits();
+        JPanel[] pits = mancalaView.getPits();
         for (int i = 0; i< pits.length; i++) {
             pits[i].addMouseListener(this);
         }
@@ -36,7 +36,7 @@ public class MancalaController {
      * Attaches this controller as an ActionListener to the undo button.
      */
     private void attachButtonListeners() {
-        view.getUndoButton().addActionListener(this);
+        mancalaView.getUndoButton().addActionListener(this);
     }
 
     /**
@@ -44,7 +44,7 @@ public class MancalaController {
     */
     @Override
     public void mouseClicked(MouseEvent e) {
-        JPanel[] pits = view.getPitPanels();
+        JPanel[] pits = mancalaView.getPitPanels();
         for (int i = 0; i < pits.length; i++) {
             if (e.getSource() == pits[i]) {
                 pitClicked(i);
@@ -58,10 +58,10 @@ public class MancalaController {
     * @param pitIndex board array index of the clicked pit
     */
     public void pitClicked(int pitIndex) {
-        int[] board = model.getBoard();
+        int[] board = mancalaModel.getBoard();
 
         // check pit belongs to current player
-        if (model.getCurrentPlayer() == 0) {
+        if (mancalaModel.getCurrentPlayer() == 0) {
             if (pitIndex < 0 || pitIndex > 5) return;
         } else {
             if (pitIndex < 7 || pitIndex > 12) return;
@@ -70,15 +70,15 @@ public class MancalaController {
         // cant click an empty pit
         if (board[pitIndex] == 0) return;
 
-        model.makeMove(pitIndex);
+        mancalaModel.makeMove(pitIndex);
 
         // redraw board after move
-        view.drawBoard();
+        mancalaView.drawBoard();
 
         // check if game ended
-        if (model.isGameOver()) {
-            model.collectRemainingStones();
-            view.showGameOverDialog();
+        if (mancalaModel.isGameOver()) {
+            mancalaModel.collectRemainingStones();
+            mancalaView.showGameOverDialog();
         }
     }
 
@@ -86,9 +86,9 @@ public class MancalaController {
     * Handles undo button click, checks eligibility then restores previous state.
     */
     public void undoClicked() {
-        if (model.canUndo() && model.getUndoCount() < 3) {
-            model.undoMove();
-            view.drawBoard();
+        if (mancalaModel.canUndo() && mancalaModel.getUndoCount() < 3) {
+            mancalaModel.undoMove();
+            mancalaView.drawBoard();
         }
     }
 
@@ -97,8 +97,8 @@ public class MancalaController {
     * @param style the selected BoardStyle
     */
     public void styleSelected(BoardStyle style) {
-        view.setStyle(style);
-        view.drawBoard();
+        mancalaView.setStyle(style);
+        mancalaView.drawBoard();
     }
 
     /**
@@ -109,8 +109,8 @@ public class MancalaController {
         try {
             int stones = Integer.parseInt(input.trim());
             if (stones == 3 || stones == 4) {
-                model.initBoard(stones);
-                view.showGameBoard();
+                mancalaModel.initBoard(stones);
+                mancalaView.showGameBoard();
             } else {
                 System.out.println("must be 3 or 4");
             }
@@ -124,7 +124,7 @@ public class MancalaController {
     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == view.getUndoButton()) {
+        if (e.getSource() == mancalaView.getUndoButton()) {
             undoClicked();
         }
     }
