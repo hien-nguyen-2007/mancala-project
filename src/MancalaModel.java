@@ -36,11 +36,12 @@ public class MancalaModel {
      * @param stones number of stones per pit (3 or 4)
      */
     public void initBoard(int stones) {
-        // TODO
+        // Fill pits with number of stones (3 or 4)
         for (int i = 0; i < 14; i++) {
             this.board[i] = stones;
         }
 
+        // Set respective mancalas to 0
         this.board[6] = 0;
         this.board[13] = 0;
     }
@@ -55,6 +56,7 @@ public class MancalaModel {
      */
     public void makeMove(int pitIndex) {
         // TODO
+        saveState();
     }
 
     /**
@@ -64,8 +66,35 @@ public class MancalaModel {
      * @return index of the last pit a stone was placed in
      */
     private int distributeStones(int pitIndex) {
-        // TODO
-        return -1;
+        int stones = this.board[pitIndex];
+        int current = pitIndex + 1;
+
+        this.board[pitIndex] = 0;
+
+        // While there are still stones to distribute
+        while (stones > 0) {
+            if (current == 14) {
+                current = 0;
+            }
+
+            // Gives a stone to the current player's pit if applicable and skips opponent's
+            if (current == 6 && this.currentPlayer == 0) {
+                this.board[current]++;
+            } else if (current == 13 && this.currentPlayer == 1) {
+                this.board[current]++;
+            } else if (current == 6 || current == 13) {
+                current++;
+                continue;
+            } else {
+                this.board[current]++;
+            }
+
+            // Move current pit forward and remove one stone
+            current++;
+            stones--;
+        }
+
+        return current - 1;
     }
 
     /**
@@ -74,8 +103,13 @@ public class MancalaModel {
      * @return true if the player earns a free turn
      */
     private boolean isFreeTurn(int lastIndex) {
-        // TODO
-        return false;
+        if (lastIndex == 6 && this.currentPlayer == 0) {
+            return true;
+        } else if (lastIndex == 13 && this.currentPlayer == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -85,7 +119,19 @@ public class MancalaModel {
      * @param lastIndex index where the last stone was placed
      */
     private void checkCapture(int lastIndex) {
-        // TODO
+        int opposite = getOppositePit(lastIndex);
+
+        if (this.board[lastIndex] == 1 && this.board[opposite] != 0) {
+            if (lastIndex >= 0 && lastIndex < 6 && this.currentPlayer == 0) {
+                this.board[6] += 1 + this.board[opposite];
+                this.board[opposite] = 0;
+                this.board[lastIndex] = 0;
+            } else if (lastIndex >= 7 && lastIndex < 13 && this.currentPlayer == 1) {
+                this.board[13] += 1 + this.board[opposite];
+                this.board[opposite] = 0;
+                this.board[lastIndex] = 0;
+            }
+        }
     }
 
     /**
@@ -94,8 +140,9 @@ public class MancalaModel {
      * @return the opposite pit index
      */
     private int getOppositePit(int pitIndex) {
-        // TODO
         int opposite = 0;
+
+        // Hardcode values
         switch (pitIndex) {
             case 0:
                 opposite = 12;
@@ -142,12 +189,12 @@ public class MancalaModel {
      * Switches the current player. Called after a non-free-turn move.
      */
     private void switchPlayer() {
-        // TODO
         if (this.currentPlayer == 1) {
             this.currentPlayer = 0;
         } else {
             this.currentPlayer = 1;
         }
+
         this.savedPlayer = this.currentPlayer;
     }
 
@@ -158,10 +205,11 @@ public class MancalaModel {
      * Only allowed if canUndo is true and undoCount < 3.
      */
     public void undoMove() {
-        // TODO
+        // If this undo is not in a row and there are still undo's left
         if (this.canUndo && this.undoCount < 3) {
             this.board = this.savedState.clone();
         }
+
         this.canUndo = false;
         this.undoCount++;
     }
@@ -170,7 +218,6 @@ public class MancalaModel {
      * Saves the current board state and player turn before a move is made.
      */
     private void saveState() {
-        // TODO
         this.savedState = this.board.clone();
     }
 
@@ -181,16 +228,22 @@ public class MancalaModel {
      * @return true if the game has ended
      */
     public boolean isGameOver() {
-        // TODO
+        boolean gameOver = true;
 
+        // Checks Player A's side
         for (int i = 0; i < 6; i++) {
-            if (this.board[i] == 0) {
-                return false;
+            if (this.board[i] != 0) {
+                gameOver = false;
             }
         }
 
+        if (gameOver) {
+            return true;
+        }
+
+        // Checks Player B's side
         for (int i = 7; i < 13; i++) {
-            if (this.board[i] == 0) {
+            if (this.board[i] != 0) {
                 return false;
             }
         }
@@ -204,10 +257,13 @@ public class MancalaModel {
      */
     public void collectRemainingStones() {
         // TODO
+
+        // Moves Player A's stones
         for (int i = 0; i < 6; i++) {
             this.board[6] += this.board[i];
         }
 
+        // Moves Player B's stones
         for (int i = 7; i < 13; i++) {
             this.board[13] += this.board[i];
         }
@@ -218,13 +274,14 @@ public class MancalaModel {
      * @return winning player index, or -1 for tie
      */
     public int getWinner() {
-        // TODO
+        // Checks for a winner
         if (this.board[6] > this.board[13]) {
             return 0;
         } else if (this.board[6] < this.board[13]) {
             return 1;
         }
 
+        // Return tie
         return -1;
     }
 
@@ -235,7 +292,6 @@ public class MancalaModel {
      * @param l the listener to add
      */
     public void addChangeListener(ChangeListener l) {
-        // TODO
         this.listeners.add(l);
     }
 
@@ -243,7 +299,6 @@ public class MancalaModel {
      * Notifies all registered listeners that the model has changed.
      */
     private void notifyListeners() {
-        // TODO
         ChangeEvent event = new ChangeEvent(this);
         for (ChangeListener l: this.listeners) {
             l.stateChanged(event);
