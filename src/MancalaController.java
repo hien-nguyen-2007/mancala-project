@@ -74,15 +74,56 @@ public class MancalaController {
         }
     }
 
-    // remaining methods stay as TODO for now
-    public void styleSelected(BoardStyle style) { // TODO }
-    public void stonesEntered(String input) { // TODO }
-    private void attachPitListeners() { // TODO }
+    /**
+    * Handles undo button click, checks eligibility then restores previous state.
+    */
+    public void undoClicked() {
+        if (model.canUndo() && model.getUndoCount() < 3) {
+            model.undoMove();
+            view.drawBoard();
+        }
+    }
 
-    @Override public void mouseClicked(MouseEvent e) { // TODO }
+    /**
+    * Swaps in a new board style and redraws.
+    * @param style the selected BoardStyle
+    */
+    public void styleSelected(BoardStyle style) {
+        view.setStyle(style);
+        view.drawBoard();
+    }
+
+    /**
+    * Validates stone count input and initializes the board.
+    * @param input raw string entered by player
+    */
+    public void stonesEntered(String input) {
+        try {
+            int stones = Integer.parseInt(input.trim());
+            if (stones == 3 || stones == 4) {
+                model.initBoard(stones);
+                view.showGameBoard();
+            } else {
+                System.out.println("must be 3 or 4");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("invalid input");
+        }
+    }
+
+    /**
+    * Routes button presses to the correct handler.
+    */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == view.getUndoButton()) {
+            undoClicked();
+        }
+    }
+
+    //  Unused methods from interface.
     @Override public void mousePressed(MouseEvent e) {}
     @Override public void mouseReleased(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
-    @Override public void actionPerformed(ActionEvent e) { // TODO }
 }
