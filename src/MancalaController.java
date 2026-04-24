@@ -26,7 +26,7 @@ public class MancalaController implements MouseListener, ActionListener{
      * Attaches this controller as a MouseListener to all pit panels.
      */
     private void attachPitListeners() {
-        JPanel[] pits = mancalaView.getPits();
+        JPanel[] pits = mancalaView.getPitPanels();
         for (int i = 0; i< pits.length; i++) {
             pits[i].addMouseListener(this);
         }
