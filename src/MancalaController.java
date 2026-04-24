@@ -31,9 +31,41 @@ public class MancalaController {
         view.getUndoButton().addActionListener(this);
     }
 
+    /**
+    * Determines which pit was clicked and calls pitClicked().
+    */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JPanel[] pits = view.getPitPanels();
+        for (int i = 0; i < pits.length; i++) {
+            if (e.getSource() == pits[i]) {
+                pitClicked(i);
+                return;
+            }
+        }
+    }
+
+    /**
+    * Validates the move then tells the model to execute it.
+    * @param pitIndex board array index of the clicked pit
+    */
+    public void pitClicked(int pitIndex) {
+        int[] board = model.getBoard();
+
+        // check pit belongs to current player
+        if (model.getCurrentPlayer() == 0) {
+            if (pitIndex < 0 || pitIndex > 5) return;
+        } else {
+            if (pitIndex < 7 || pitIndex > 12) return;
+        }
+
+        // cant click an empty pit
+        if (board[pitIndex] == 0) return;
+
+        model.makeMove(pitIndex);
+    }
+
     // remaining methods stay as TODO for now
-    public void pitClicked(int pitIndex) { // TODO }
-    public void undoClicked() { // TODO }
     public void styleSelected(BoardStyle style) { // TODO }
     public void stonesEntered(String input) { // TODO }
     private void attachPitListeners() { // TODO }
