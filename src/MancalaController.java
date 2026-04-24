@@ -63,6 +63,15 @@ public class MancalaController {
         if (board[pitIndex] == 0) return;
 
         model.makeMove(pitIndex);
+
+        // redraw board after move
+        view.drawBoard();
+
+        // check if game ended
+        if (model.isGameOver()) {
+            model.collectRemainingStones();
+            view.showGameOverDialog();
+        }
     }
 
     // remaining methods stay as TODO for now
