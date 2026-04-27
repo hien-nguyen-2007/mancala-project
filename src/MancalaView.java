@@ -12,6 +12,7 @@ public class MancalaView extends JFrame implements ChangeListener {
     private JButton styleButton1;
     private JButton styleButton2;
     private JLabel currentPlayerLabel;
+    private MancalaController mancalaController;
 
     public MancalaView(MancalaModel model, BoardStyle style) {
         this.mancalaModel = model;
@@ -44,18 +45,42 @@ public class MancalaView extends JFrame implements ChangeListener {
         setVisible(true);
     }
 
+    /**
+    * Shows the main game board after style and stone count are selected.
+    */
     public void showGameBoard() {
-        // TODO
+        getContentPane().removeAll();
+        add(createBoardPanel(), BorderLayout.CENTER);
+        add(createControlPanel(), BorderLayout.SOUTH);
+        revalidate();
+        repaint();
+        mancalaController.attachPitListeners(); // attach after pits are created
+        mancalaController.attachButtonListeners();
     }
 
-    // builds the undo button and player turn label at the bottom
+    // builds the board panel with pits and mancalas
     private JPanel createBoardPanel() {
-        JPanel panel = new JPanel();
-        undoButton = new JButton("Undo");
-        currentPlayerLabel = new JLabel("Player A's Turn");
-        panel.add(currentPlayerLabel);
-        panel.add(undoButton);
-        return panel;
+       JPanel board = new JPanel(new BorderLayout());
+        JPanel playerBRow = new JPanel(new GridLayout(1, 6));
+        JPanel playerARow = new JPanel(new GridLayout(1, 6));
+
+        // create player B's pits (indices 7-12)
+        for (int i = 7; i <= 12; i++) {
+            pits[i] = new JPanel();
+            pits[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            playerBRow.add(pits[i]);
+        }
+
+        // create player A's pits (indices 0-5)
+        for (int i = 0; i <= 5; i++) {
+            pits[i] = new JPanel();
+            pits[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            playerARow.add(pits[i]);
+        }
+
+        board.add(playerBRow, BorderLayout.NORTH);
+        board.add(playerARow, BorderLayout.SOUTH);
+        return board;
     }
 
     private JPanel createControlPanel() {
@@ -63,8 +88,9 @@ public class MancalaView extends JFrame implements ChangeListener {
         return new JPanel();
     }
 
+    // redraws the board to reflect current model state
     public void drawBoard() {
-        // TODO
+        repaint();
     }
 
     public void showGameOverDialog() {
@@ -82,6 +108,10 @@ public class MancalaView extends JFrame implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         //TODO
+    }
+
+    public void setController(MancalaController controller) {
+        this.mancalaController = controller;
     }
 
     public JPanel[] getPitPanels() { return pits; }

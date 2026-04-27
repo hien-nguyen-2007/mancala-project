@@ -18,24 +18,24 @@ public class MancalaController implements MouseListener, ActionListener{
     public MancalaController(MancalaModel model, MancalaView view) {
         this.mancalaModel = model;
         this.mancalaView = view;
-        attachPitListeners();
-        attachButtonListeners();
     }
 
     /**
      * Attaches this controller as a MouseListener to all pit panels.
      */
-    private void attachPitListeners() {
+    public void attachPitListeners() {
         JPanel[] pits = mancalaView.getPitPanels();
-        for (int i = 0; i< pits.length; i++) {
-            pits[i].addMouseListener(this);
+        for (int i = 0; i < pits.length; i++) {
+            if (pits[i] != null) {
+                pits[i].addMouseListener(this);
+            }
         }
     }
-
+    
     /**
      * Attaches this controller as an ActionListener to the undo button.
      */
-    private void attachButtonListeners() {
+    public void attachButtonListeners() {
         mancalaView.getUndoButton().addActionListener(this);
     }
 
