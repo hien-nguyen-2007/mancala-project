@@ -22,17 +22,40 @@ public class MancalaView extends JFrame implements ChangeListener {
         setSize(800, 400);
     }
 
+    /**
+    * Shows the opening screen with style selection buttons.
+    */
     public void showOpeningScreen() {
-        // TODO
+        getContentPane().removeAll();
+    
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Select a board style:");
+    
+        styleButton1 = new JButton("Rounded");
+        styleButton2 = new JButton("Rectangle");
+    
+        panel.add(label);
+        panel.add(styleButton1);
+        panel.add(styleButton2);
+    
+        add(panel);
+        revalidate();
+        repaint();
+        setVisible(true);
     }
 
     public void showGameBoard() {
         // TODO
     }
 
+    // builds the undo button and player turn label at the bottom
     private JPanel createBoardPanel() {
-        // TODO
-        return new JPanel();
+        JPanel panel = new JPanel();
+        undoButton = new JButton("Undo");
+        currentPlayerLabel = new JLabel("Player A's Turn");
+        panel.add(currentPlayerLabel);
+        panel.add(undoButton);
+        return panel;
     }
 
     private JPanel createControlPanel() {
