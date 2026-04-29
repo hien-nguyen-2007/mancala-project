@@ -32,6 +32,14 @@ public class MancalaModel {
     // Game Setup
 
     /**
+     * Initializes number of stones per pit.
+     * @param stones number of stones per pit
+     */
+    public void setStones(int stones) {
+        this.stonesPerPit = stones;
+    }
+
+    /**
      * Initializes the board with the given number of stones per pit.
      * @param stones number of stones per pit (3 or 4)
      */
@@ -56,7 +64,11 @@ public class MancalaModel {
      */
     public void makeMove(int pitIndex) {
         // TODO
+        distributeStones(pitIndex);
         saveState();
+        switchPlayer();
+        this.canUndo = true;
+
     }
 
     /**
@@ -194,8 +206,6 @@ public class MancalaModel {
         } else {
             this.currentPlayer = 1;
         }
-
-        this.savedPlayer = this.currentPlayer;
     }
 
     // Undo
@@ -212,6 +222,8 @@ public class MancalaModel {
 
         this.canUndo = false;
         this.undoCount++;
+
+        notifyListeners();
     }
 
     /**
@@ -256,16 +268,16 @@ public class MancalaModel {
      * into the respective player's Mancala.
      */
     public void collectRemainingStones() {
-        // TODO
-
         // Moves Player A's stones
         for (int i = 0; i < 6; i++) {
             this.board[6] += this.board[i];
+            this.board[i] = 0;
         }
 
         // Moves Player B's stones
         for (int i = 7; i < 13; i++) {
             this.board[13] += this.board[i];
+            this.board[i] = 0;
         }
     }
 
@@ -307,7 +319,7 @@ public class MancalaModel {
 
     // Getters
 
-    public int[] getBoard() { return board; }
+    public int[] getBoard() { return board.clone(); }
 
     public int getCurrentPlayer() { return currentPlayer; }
 
