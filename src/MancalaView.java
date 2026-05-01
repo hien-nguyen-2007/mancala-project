@@ -26,6 +26,7 @@ public class MancalaView extends JFrame implements ChangeListener {
         setTitle("Mancala");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
     }
 
@@ -62,12 +63,15 @@ public class MancalaView extends JFrame implements ChangeListener {
         mancalaController.styleSelected(chosen);
 
         Object[] options = { "3", "4" };
+        JLabel label = new JLabel("Number of stones per pit?");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "Number of stones per pit?",
+                label,
                 "Mancala",
                 JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
                 options[1]);
