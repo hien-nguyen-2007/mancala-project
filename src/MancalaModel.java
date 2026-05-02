@@ -43,6 +43,20 @@ public class MancalaModel {
     }
 
     /**
+     * Resets all game state so a fresh game can be started from the opening screen.
+     * Listeners are preserved.
+     */
+    public void resetGame() {
+        this.board = new int[14];
+        this.savedState = new int[14];
+        this.undoCount = new int[2];
+        this.currentPlayer = 0;
+        this.savedPlayer = 0;
+        this.canUndo = false;
+        this.stonesPerPit = 0;
+    }
+
+    /**
      * Initializes the board with the given number of stones per pit.
      * @param stones number of stones per pit (3 or 4)
      */
