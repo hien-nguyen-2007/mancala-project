@@ -48,8 +48,4 @@ public class RectangleStyle implements BoardStyle {
     @Override
     public Color getPitColor() { return Color.BLUE; }
 
-    @Override
-    public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
-
-    }
 }

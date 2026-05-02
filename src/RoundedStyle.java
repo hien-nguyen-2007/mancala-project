@@ -48,9 +48,4 @@ public class RoundedStyle implements BoardStyle {
 
     @Override
     public Color getPitColor() { return new Color(139, 69, 19); }
-
-    @Override
-    public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
-
-    }
 }
