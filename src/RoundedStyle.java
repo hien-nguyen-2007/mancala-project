@@ -14,7 +14,7 @@ public class RoundedStyle implements BoardStyle {
         g.setColor(getPitColor());
         int pad = 6;
         g.fillOval(x + pad, y + pad, width - 2 * pad, height - 2 * pad);
-        drawCount(g, x, y, width, height, stones);
+        drawStones(g, x, y, width, height, stones);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class RoundedStyle implements BoardStyle {
         g.setColor(getPitColor());
         int pad = 8;
         g.fillRoundRect(x + pad, y + pad, width - 2 * pad, height - 2 * pad, width, width);
-        drawCount(g, x, y, width, height, stones);
+        drawStones(g, x, y, width, height, stones);
     }
 
     @Override
@@ -41,6 +41,21 @@ public class RoundedStyle implements BoardStyle {
         int tx = x + (width - fm.stringWidth(s)) / 2;
         int ty = y + (height + fm.getAscent()) / 2 - 4;
         g.drawString(s, tx, ty);
+    }
+
+    @Override
+    public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
+        g.setColor(Color.WHITE);
+
+        int stoneSize = 10;
+        int padding = 20;
+
+        for (int i = 0; i < stones; i++) {
+            int px = x + padding + (i % 4) * (stoneSize + 5);
+            int py = y + padding + (i / 4) * (stoneSize + 5);
+
+            g.fillOval(px, py, stoneSize, stoneSize);
+        }
     }
 
     @Override
