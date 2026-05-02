@@ -33,10 +33,11 @@ public class MancalaController implements MouseListener, ActionListener{
     }
     
     /**
-     * Attaches this controller as an ActionListener to the undo button.
+     * Attaches this controller as an ActionListener to the undo and new-game buttons.
      */
     public void attachButtonListeners() {
         mancalaView.getUndoButton().addActionListener(this);
+        mancalaView.getNewGameButton().addActionListener(this);
     }
 
     /**
@@ -120,12 +121,22 @@ public class MancalaController implements MouseListener, ActionListener{
     }
 
     /**
+    * Resets model state and returns to the opening screen for a fresh game.
+    */
+    public void newGameClicked() {
+        mancalaModel.resetGame();
+        mancalaView.showOpeningScreen();
+    }
+
+    /**
     * Routes button presses to the correct handler.
     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mancalaView.getUndoButton()) {
             undoClicked();
+        } else if (e.getSource() == mancalaView.getNewGameButton()) {
+            newGameClicked();
         }
     }
 
