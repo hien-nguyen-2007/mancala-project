@@ -24,6 +24,14 @@ public class RectangleStyle implements BoardStyle {
         drawCount(g, x, y, width, height, stones);
     }
 
+    @Override
+    public void drawHighlight(Graphics2D g, int x, int y, int width, int height) {
+        g.setColor(new Color(255, 215, 0));
+        g.setStroke(new BasicStroke(3f));
+        int pad = 4;
+        g.drawRect(x + pad, y + pad, width - 2 * pad - 1, height - 2 * pad - 1);
+    }
+
     private void drawCount(Graphics2D g, int x, int y, int width, int height, int stones) {
         g.setColor(Color.WHITE);
         g.setFont(g.getFont().deriveFont(Font.BOLD, 16f));

@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -9,6 +11,7 @@ public class MancalaView extends JFrame implements ChangeListener {
     private BoardStyle boardStyle;
     private JPanel[] pits;
     private JButton undoButton;
+    private JButton newGameButton;
     private JButton styleButton1;
     private JButton styleButton2;
     private JLabel currentPlayerLabel;
@@ -26,6 +29,7 @@ public class MancalaView extends JFrame implements ChangeListener {
         setTitle("Mancala");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
     }
 
@@ -62,12 +66,15 @@ public class MancalaView extends JFrame implements ChangeListener {
         mancalaController.styleSelected(chosen);
 
         Object[] options = { "3", "4" };
+        JLabel label = new JLabel("Number of stones per pit?");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "Number of stones per pit?",
+                label,
                 "Mancala",
                 JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
                 options[1]);
@@ -113,8 +120,8 @@ public class MancalaView extends JFrame implements ChangeListener {
         pits[13] = makeMancalaPanel(13); // Player B store (left)
         pits[6]  = makeMancalaPanel(6);  // Player A store (right)
 
-        board.add(pits[13], BorderLayout.WEST);
-        board.add(pits[6],  BorderLayout.EAST);
+        board.add(wrapMancalaWithLabel(pits[13], "Player B"), BorderLayout.WEST);
+        board.add(wrapMancalaWithLabel(pits[6],  "Player A"), BorderLayout.EAST);
         board.add(playerBRow, BorderLayout.NORTH);
         board.add(playerARow, BorderLayout.SOUTH);
         board.setBackground(boardStyle.getBackgroundColor());
@@ -124,6 +131,7 @@ public class MancalaView extends JFrame implements ChangeListener {
     // Pit panel that delegates rendering to the current BoardStyle each repaint,
     // reading the live stone count from the model.
     private JPanel makePitPanel(final int index) {
+        final boolean[] hovered = {false};
         JPanel p = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -133,11 +141,48 @@ public class MancalaView extends JFrame implements ChangeListener {
                         RenderingHints.VALUE_ANTIALIAS_ON);
                 int stones = mancalaModel.getBoard()[index];
                 boardStyle.drawPit(g2, 0, 0, getWidth(), getHeight(), stones);
+                if (hovered[0] && isPlayablePit(index)) {
+                    boardStyle.drawHighlight(g2, 0, 0, getWidth(), getHeight());
+                }
             }
         };
         p.setPreferredSize(new Dimension(80, 100));
         p.setBackground(boardStyle.getBackgroundColor());
+        p.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                hovered[0] = true;
+                if (isPlayablePit(index)) {
+                    p.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+                p.repaint();
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                hovered[0] = false;
+                p.setCursor(Cursor.getDefaultCursor());
+                p.repaint();
+            }
+        });
         return p;
+    }
+
+    // Whether this pit is a legal click for the current player (non-empty, own side).
+    private boolean isPlayablePit(int index) {
+        if (mancalaModel.getBoard()[index] == 0) return false;
+        int player = mancalaModel.getCurrentPlayer();
+        if (player == 0) return index >= 0 && index <= 5;
+        return index >= 7 && index <= 12;
+    }
+
+    // Wraps a mancala panel with an owner label above it.
+    private JPanel wrapMancalaWithLabel(JPanel mancala, String text) {
+        JPanel wrapper = new JPanel(new BorderLayout());
+        JLabel ownerLabel = new JLabel(text, SwingConstants.CENTER);
+        ownerLabel.setFont(ownerLabel.getFont().deriveFont(Font.BOLD, 14f));
+        ownerLabel.setForeground(Color.WHITE);
+        wrapper.add(ownerLabel, BorderLayout.NORTH);
+        wrapper.add(mancala, BorderLayout.CENTER);
+        wrapper.setBackground(boardStyle.getBackgroundColor());
+        return wrapper;
     }
 
     private JPanel makeMancalaPanel(final int index) {
@@ -157,13 +202,15 @@ public class MancalaView extends JFrame implements ChangeListener {
         return p;
     }
 
-    // Bottom control panel with current-player label and Undo button.
+    // Bottom control panel with current-player label, Undo, and New Game.
     private JPanel createControlPanel() {
         JPanel controls = new JPanel(new FlowLayout());
         currentPlayerLabel = new JLabel("Player A's turn");
         undoButton = new JButton("Undo");
+        newGameButton = new JButton("New Game");
         controls.add(currentPlayerLabel);
         controls.add(undoButton);
+        controls.add(newGameButton);
         return controls;
     }
 
@@ -241,6 +288,8 @@ public class MancalaView extends JFrame implements ChangeListener {
     public JPanel[] getPitPanels() { return pits; }
 
     public JButton getUndoButton() { return undoButton; }
+
+    public JButton getNewGameButton() { return newGameButton; }
 
     public BoardStyle getStyle() { return boardStyle; }
 }
