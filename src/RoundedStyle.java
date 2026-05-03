@@ -47,14 +47,36 @@ public class RoundedStyle implements BoardStyle {
     public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
         g.setColor(Color.WHITE);
 
-        int stoneSize = 10;
-        int padding = 20;
+        if (stones <= 20) {
+            int size = 10;
+            int padding = 20;
 
-        for (int i = 0; i < stones; i++) {
-            int px = x + padding + (i % 4) * (stoneSize + 5);
-            int py = y + padding + (i / 4) * (stoneSize + 5);
+            for (int i = 0; i < stones; i++) {
+                int px = x + padding + (i % 4) * (size + 5);
+                int py = y + padding + (i / 4) * (size + 5);
 
-            g.fillOval(px, py, stoneSize, stoneSize);
+                g.fillOval(px, py, size, size);
+            }
+        } else if (stones <= 30){
+            int size = 5;
+            int padding = 30;
+
+            for (int i = 0; i < stones; i++) {
+                int px = x + padding + (i % 4) * (size + 5);
+                int py = y + padding + (i / 4) * (size + 5);
+
+                g.fillOval(px, py, size, size);
+            }
+        } else {
+            int size = 3;
+            int padding = 40;
+
+            for (int i = 0; i < stones; i++) {
+                int px = x + padding + (i % 4) * (size + 5);
+                int py = y + padding + (i / 4) * (size + 5);
+
+                g.fillOval(px, py, size, size);
+            }
         }
     }
 

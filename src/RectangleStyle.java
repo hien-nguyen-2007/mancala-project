@@ -45,14 +45,14 @@ public class RectangleStyle implements BoardStyle {
     public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
         g.setColor(Color.WHITE);
 
-        int stoneSize = 10;
+        int size = 10;
         int padding = 20;
 
         for (int i = 0; i < stones; i++) {
-            int px = x + padding + (i % 4) * (stoneSize + 5);
-            int py = y + padding + (i / 4) * (stoneSize + 5);
+            int px = x + padding + (i % 4) * (size + 5);
+            int py = y + padding + (i / 4) * (size + 5);
 
-            g.fillRect(px, py, stoneSize, stoneSize);
+            g.fillRect(px, py, size, size);
         }
     }
 
