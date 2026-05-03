@@ -110,11 +110,11 @@ public class MancalaView extends JFrame implements ChangeListener {
 
         for (int i = 12; i >= 7; i--) {
             pits[i] = makePitPanel(i);
-            playerBRow.add(pits[i]);
+            playerBRow.add(wrapMancalaWithLabel(pits[i], "B" + (i - 6)));
         }
         for (int i = 0; i <= 5; i++) {
             pits[i] = makePitPanel(i);
-            playerARow.add(pits[i]);
+            playerARow.add(wrapMancalaWithLabel(pits[i], "A" + (i + 1)));
         }
 
         pits[13] = makeMancalaPanel(13); // Player B store (left)
