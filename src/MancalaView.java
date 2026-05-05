@@ -33,7 +33,7 @@ public class MancalaView extends JFrame implements ChangeListener {
         this.pits = new JPanel[14];
         setTitle("Mancala");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 400);
+        setSize(800, 440);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
     }
