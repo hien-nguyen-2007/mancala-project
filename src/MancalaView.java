@@ -5,10 +5,15 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * MancalaView - Renders the Mancala board and all UI components.
+ * Extends JFrame and implements ChangeListener to update when the model changes.
+ */
+
 public class MancalaView extends JFrame implements ChangeListener {
 
     private MancalaModel mancalaModel;
-    private BoardStyle boardStyle;
+    private BoardStyle boardStyle; 
     private JPanel[] pits;
     private JButton undoButton;
     private JButton newGameButton;
@@ -59,9 +64,11 @@ public class MancalaView extends JFrame implements ChangeListener {
         setVisible(true);
     }
 
-    // Style chosen -> ask the controller to swap the strategy, then prompt for
-    // stone count (use case: Prompt for number of stones), then hand off to the
-    // controller to start the game.
+    /**
+    * Style chosen -> ask the controller to swap the strategy, then prompt for
+    * stone count (use case: Prompt for number of stones), then hand off to the
+    * controller to start the game. 
+    */
     private void beginGame(BoardStyle chosen) {
         mancalaController.styleSelected(chosen);
 
@@ -99,9 +106,11 @@ public class MancalaView extends JFrame implements ChangeListener {
         updatePlayerLabel();
     }
 
-    // Builds the central board: B's row on top (12..7 left-to-right), A's row
-    // on the bottom (0..5 left-to-right), B Mancala on the WEST, A Mancala on
-    // the EAST. Stones travel counter-clockwise to match the model.
+    /** 
+     * Builds the central board: B's row on top (12..7 left-to-right), A's row
+     * on the bottom (0..5 left-to-right), B Mancala on the WEST, A Mancala on
+     * the EAST. Stones travel counter-clockwise to match the model.
+     */
     private JPanel createBoardPanel() {
         JPanel board = new JPanel(new BorderLayout());
 
@@ -128,8 +137,10 @@ public class MancalaView extends JFrame implements ChangeListener {
         return board;
     }
 
-    // Pit panel that delegates rendering to the current BoardStyle each repaint,
-    // reading the live stone count from the model.
+    /**
+     * Pit panel that delegates rendering to the current BoardStyle each repaint,
+     * reading the live stone count from the model.
+     */
     private JPanel makePitPanel(final int index) {
         final boolean[] hovered = {false};
         JPanel p = new JPanel() {
@@ -165,7 +176,11 @@ public class MancalaView extends JFrame implements ChangeListener {
         return p;
     }
 
-    // Whether this pit is a legal click for the current player (non-empty, own side).
+    /**
+     * Checks whether this pit is a legal click for the current player (non-empty, own side).
+     * @param index the board array index of the pit
+     * @return true if the current player can legally select this pit
+     */
     private boolean isPlayablePit(int index) {
         if (mancalaModel.getBoard()[index] == 0) return false;
         int player = mancalaModel.getCurrentPlayer();
@@ -173,7 +188,12 @@ public class MancalaView extends JFrame implements ChangeListener {
         return index >= 7 && index <= 12;
     }
 
-    // Wraps a mancala panel with an owner label above it.
+    /** 
+     * Wraps a pit or Mancala panel with an owner label above it.
+     * @param mancala the panel to wrap
+     * @param text the label text to display above the panel
+     * @return the wrapped JPanel
+     */
     private JPanel wrapMancalaWithLabel(JPanel mancala, String text) {
         JPanel wrapper = new JPanel(new BorderLayout());
         JLabel ownerLabel = new JLabel(text, SwingConstants.CENTER);
@@ -185,6 +205,10 @@ public class MancalaView extends JFrame implements ChangeListener {
         return wrapper;
     }
 
+    /**
+    * Creates a panel for a Mancala store that delegates rendering to the current BoardStyle.
+    * @param index the board array index of this Mancala (6 for A, 13 for B)
+    */
     private JPanel makeMancalaPanel(final int index) {
         JPanel p = new JPanel() {
             @Override
@@ -202,7 +226,9 @@ public class MancalaView extends JFrame implements ChangeListener {
         return p;
     }
 
-    // Bottom control panel with current-player label, Undo, and New Game.
+    /**
+     * Bottom control panel with current-player label, Undo, and New Game.
+     */
     private JPanel createControlPanel() {
         JPanel controls = new JPanel(new FlowLayout());
         currentPlayerLabel = new JLabel("Player A's turn");
@@ -280,16 +306,23 @@ public class MancalaView extends JFrame implements ChangeListener {
         drawBoard();
     }
 
-    /** Wires the controller after construction. */
+    /**
+    * Wires the controller after construction.
+    * @param controller the MancalaController to attach
+    */
     public void setController(MancalaController controller) {
         this.mancalaController = controller;
     }
 
+    /** @return the array of pit panels */
     public JPanel[] getPitPanels() { return pits; }
 
+    /** @return the undo button */
     public JButton getUndoButton() { return undoButton; }
 
+    /** @return the new game button */
     public JButton getNewGameButton() { return newGameButton; }
 
+    /** @return the current board style */
     public BoardStyle getStyle() { return boardStyle; }
 }
