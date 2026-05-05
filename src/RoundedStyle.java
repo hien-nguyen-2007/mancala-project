@@ -9,22 +9,48 @@ import java.awt.*;
  */
 public class RoundedStyle implements BoardStyle {
 
+    /**
+     * Draws oval pit in which stones will be collected at
+     * @param g graphics context
+     * @param x starting respective x-coordinate
+     * @param y starting respective y-coordinate
+     * @param width width of pit
+     * @param height height of pit
+     * @param stones number of stones in pit
+     */
     @Override
     public void drawPit(Graphics2D g, int x, int y, int width, int height, int stones) {
         g.setColor(getPitColor());
         int pad = 6;
         g.fillOval(x + pad, y + pad, width - 2 * pad, height - 2 * pad);
-        drawStones(g, x, y, width, height, stones);
+        drawStones(g, x, y, stones);
     }
 
+    /**
+     * Draws oval mancala in which stones will be collected at for each player
+     * @param g graphics context
+     * @param x starting respective x-coordinate
+     * @param y starting respective y-coordinate
+     * @param width width of mancala
+     * @param height height of mancala
+     * @param stones number of stones in mancala
+     */
     @Override
     public void drawMancala(Graphics2D g, int x, int y, int width, int height, int stones) {
         g.setColor(getPitColor());
         int pad = 8;
         g.fillRoundRect(x + pad, y + pad, width - 2 * pad, height - 2 * pad, width, width);
-        drawStones(g, x, y, width, height, stones);
+        drawStones(g, x, y, stones);
     }
 
+    /**
+     * Draws an oval highlight at location of pit
+     * @param g graphics context
+     * @param x starting respective x-coordinate
+     * @param y starting respective y-coordinate
+     * @param width width of highlight
+     * @param height height of highlight
+     */
     @Override
     public void drawHighlight(Graphics2D g, int x, int y, int width, int height) {
         g.setColor(new Color(255, 215, 0));
@@ -33,18 +59,15 @@ public class RoundedStyle implements BoardStyle {
         g.drawOval(x + pad, y + pad, width - 2 * pad - 1, height - 2 * pad - 1);
     }
 
-    private void drawCount(Graphics2D g, int x, int y, int width, int height, int stones) {
-        g.setColor(Color.WHITE);
-        g.setFont(g.getFont().deriveFont(Font.BOLD, 16f));
-        String s = String.valueOf(stones);
-        FontMetrics fm = g.getFontMetrics();
-        int tx = x + (width - fm.stringWidth(s)) / 2;
-        int ty = y + (height + fm.getAscent()) / 2 - 4;
-        g.drawString(s, tx, ty);
-    }
-
+    /**
+     * Draws circle stones inside the pit
+     * @param g graphics context
+     * @param x starting respective x-coordinate
+     * @param y starting respective y-coordinate
+     * @param stones number of stones
+     */
     @Override
-    public void drawStones(Graphics2D g, int x, int y, int width, int height, int stones) {
+    public void drawStones(Graphics2D g, int x, int y, int stones) {
         g.setColor(Color.WHITE);
 
         if (stones <= 20) {
@@ -80,9 +103,17 @@ public class RoundedStyle implements BoardStyle {
         }
     }
 
+    /**
+     * Returns background color of board style
+     * @return background color of board style
+     */
     @Override
     public Color getBackgroundColor() { return new Color(210, 180, 140); }
 
+    /**
+     * Returns pit background color of board style
+     * @return pit background color of board style
+     */
     @Override
     public Color getPitColor() { return new Color(139, 69, 19); }
 }

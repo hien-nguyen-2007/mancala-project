@@ -22,6 +22,10 @@ public class MancalaModel {
     private ArrayList<ChangeListener> listeners; // views listening for updates
 
     //Constructor
+
+    /**
+     *  Creates MancalaModel object
+     */
     public MancalaModel() {
         this.board = new int[14];
         this.savedState = new int[14];
@@ -33,14 +37,6 @@ public class MancalaModel {
     }
 
     // Game Setup
-
-    /**
-     * Initializes number of stones per pit.
-     * @param stones number of stones per pit
-     */
-    public void setStones(int stones) {
-        this.stonesPerPit = stones;
-    }
 
     /**
      * Resets all game state so a fresh game can be started from the opening screen.
