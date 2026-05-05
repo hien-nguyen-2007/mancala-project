@@ -1,10 +1,13 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.awt.*;
 
 /**
- * Concrete strategy: a dark, geometric board with sharp rectangular pits.
- * Used by {@link MancalaView} via the {@link BoardStyle} interface.
- *
- * @author Group 10
+ * RoundedStyle defines a class that implements BoardStyle and draws rectangular pits and stone edges.
  */
 public class RectangleStyle implements BoardStyle {
 

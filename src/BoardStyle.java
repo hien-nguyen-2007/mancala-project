@@ -1,5 +1,14 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.awt.*;
 
+/**
+ * BoardStyle defines an interface for a class that draws mancala board components.
+ */
 public interface BoardStyle {
     /**
      * Draws pit in which stones will be collected at

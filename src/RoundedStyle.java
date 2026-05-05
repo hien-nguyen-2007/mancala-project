@@ -1,11 +1,13 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.awt.*;
 
 /**
- * Concrete strategy: a warm wood-tone board with circular pits and rounded
- * Mancala stores. Used by {@link MancalaView} via the {@link BoardStyle}
- * interface.
- *
- * @author Group 10
+ * RoundedStyle defines a class that implements BoardStyle and draws rounded pit and stone edges.
  */
 public class RoundedStyle implements BoardStyle {
 

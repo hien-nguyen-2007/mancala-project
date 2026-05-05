@@ -1,3 +1,9 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -5,11 +11,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/**
- * MancalaView - Renders the Mancala board and all UI components.
- * Extends JFrame and implements ChangeListener to update when the model changes.
- */
 
+/**
+ * MancalaView displays the entire frame of the application. This class represents the view in MVC architecture
+ * and gets notified of any changes made in order to redisplay pits with updated stone count or stop displaying
+ * in general.
+ */
 public class MancalaView extends JFrame implements ChangeListener {
 
     private MancalaModel mancalaModel;

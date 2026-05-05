@@ -1,10 +1,19 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
-
+/**
+ * MancalaController attaches listeners to each pit and listens for when user clicks the pit. This class represents
+ * the controller in MVC architecture and calls mutator methods of the model to change state accordingly.
+ */
 public class MancalaController implements MouseListener, ActionListener{
 
     private MancalaModel mancalaModel;

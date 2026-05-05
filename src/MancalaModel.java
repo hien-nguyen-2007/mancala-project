@@ -1,10 +1,16 @@
+/**
+ * Mancala Project
+ * @author Group 10
+ * @version 1.0 5/5/2026
+ */
+
 import java.util.ArrayList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * MancalaModel - Stores and manages all game state for Mancala.
- * Follows the Model role in the MVC pattern.
+ * MancalaModel represents a mancala board and game rules. This class represents the model in MVC architecture
+ * and notifies the view after changing state.
  */
 public class MancalaModel {
 
